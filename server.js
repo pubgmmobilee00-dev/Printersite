@@ -4,6 +4,7 @@ const path = require("path");
 const fs = require("fs");
 
 const app = express();
+
 const PORT = process.env.PORT || 3000;
 
 const uploadDir = path.join(__dirname, "uploads");
@@ -42,31 +43,31 @@ app.get("/", (req, res) => {
     res.sendFile(path.join(__dirname, "index.html"));
 });
 
-// CSS və JS
-app.get("/style.css", (req, res) => {
-    res.sendFile(path.join(__dirname, "style.css"));
+// Admin panel
+app.get("/admin", (req, res) => {
+    res.sendFile(path.join(__dirname, "admin.html"));
 });
 
-app.get("/script.js", (req, res) => {
-    res.sendFile(path.join(__dirname, "script.js"));
-});
-
-// Şəkil yükləmə
+// Şəkillərin yüklənməsi
 app.post("/api/upload", upload.array("photos", 100), (req, res) => {
+
     res.json({
         success: true,
         count: req.files.length,
         message: `${req.files.length} şəkil yükləndi`
     });
+
 });
 
-// Admin üçün şəkillər
+// Admin panel üçün şəkillərin siyahısı
 app.get("/api/photos", (req, res) => {
 
     const files = fs.readdirSync(uploadDir);
 
     const photos = files
-        .filter(file => /\.(jpg|jpeg|png|webp|gif)$/i.test(file))
+        .filter(file =>
+            /\.(jpg|jpeg|png|webp|gif)$/i.test(file)
+        )
         .map(file => ({
             name: file,
             url: `/uploads/${file}`
@@ -75,9 +76,10 @@ app.get("/api/photos", (req, res) => {
     res.json(photos);
 });
 
-// Yüklənmiş şəkillərə giriş
+// Yüklənmiş şəkillər
 app.use("/uploads", express.static(uploadDir));
 
+// Server
 app.listen(PORT, () => {
     console.log(`Server işləyir: ${PORT}`);
 });
