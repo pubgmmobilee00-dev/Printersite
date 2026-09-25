@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="az">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -41,7 +42,92 @@
 
     </main>
 
-    <script src="script.js"></script>
+
+    <script>
+
+        const input =
+            document.getElementById("photoInput");
+
+        const status =
+            document.getElementById("status");
+
+
+        input.addEventListener("change", async () => {
+
+            const files =
+                Array.from(input.files);
+
+
+            if (files.length === 0) {
+                return;
+            }
+
+
+            status.textContent =
+                `⏳ ${files.length} şəkil göndərilir...`;
+
+
+            const formData =
+                new FormData();
+
+
+            files.forEach(file => {
+
+                formData.append(
+                    "photos",
+                    file
+                );
+
+            });
+
+
+            try {
+
+                const response =
+                    await fetch(
+                        "https://printersite.onrender.com/api/upload",
+                        {
+                            method: "POST",
+                            body: formData
+                        }
+                    );
+
+
+                const result =
+                    await response.json();
+
+
+                if (
+                    response.ok &&
+                    result.success
+                ) {
+
+                    status.textContent =
+                        `✅ ${result.count} şəkil uğurla göndərildi!`;
+
+                    input.value = "";
+
+                } else {
+
+                    status.textContent =
+                        "❌ Şəkillər göndərilmədi.";
+
+                }
+
+
+            } catch (error) {
+
+                console.error(error);
+
+                status.textContent =
+                    "❌ Serverə qoşulmaq mümkün olmadı.";
+
+            }
+
+        });
+
+    </script>
 
 </body>
+
 </html>
