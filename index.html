@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="az">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Şəkil Köçürmə</title>
+
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+    <main class="container">
+
+        <div class="card">
+
+            <div class="icon">🖨️</div>
+
+            <h1>Şəkilləri köçür</h1>
+
+            <p>
+                Çap üçün şəkillərinizi seçib göndərin.
+            </p>
+
+            <label for="photoInput" class="main-button">
+                📷 Şəkilləri köçür
+            </label>
+
+            <input
+                id="photoInput"
+                type="file"
+                accept="image/*"
+                multiple
+                hidden
+            >
+
+            <div id="status"></div>
+
+        </div>
+
+    </main>
+
+    <script src="script.js"></script>
+
+</body>
+</html>
