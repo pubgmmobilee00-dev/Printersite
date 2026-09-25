@@ -1,53 +1,13 @@
 const input = document.getElementById("photoInput");
 const status = document.getElementById("status");
 
-input.addEventListener("change", async () => {
+input.addEventListener("change", function () {
 
-    const files = Array.from(input.files);
+    const files = input.files;
 
-    if (files.length === 0) {
-        return;
-    }
-
-    status.textContent =
-        `⏳ ${files.length} şəkil yüklənir...`;
-
-    const formData = new FormData();
-
-    files.forEach(file => {
-        formData.append("photos", file);
-    });
-
-    try {
-
-        const response = await fetch("/api/upload", {
-            method: "POST",
-            body: formData
-        });
-
-        const result = await response.json();
-
-        if (response.ok && result.success) {
-
-            status.textContent =
-                `✅ ${result.count} şəkil uğurla göndərildi!`;
-
-            input.value = "";
-
-        } else {
-
-            status.textContent =
-                "❌ Şəkilləri göndərmək mümkün olmadı.";
-
-        }
-
-    } catch (error) {
-
-        console.error(error);
-
+    if (files.length > 0) {
         status.textContent =
-            "❌ Serverə qoşulmaq mümkün olmadı.";
-
+            "✅ " + files.length + " şəkil seçildi!";
     }
 
 });
